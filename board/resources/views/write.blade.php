@@ -7,13 +7,15 @@
     <title>Write</title>
 </head>
 <body>
+    @include('layout.errorsvalidate')
+{{-- 위구문 alert로 만드는 방법은? --}}
     <form action="{{route('boards.store')}}" method="post">
         @csrf
         <label for="title">제목 : </label>
-        <input type="text" name="title" id="title">
+        <input type="text" name="title" id="title" value="{{old('title')}}">
         <br>
         <label for="content">내용 : </label>
-        <textarea name="content" id="content" placeholder = "여다쓰지?">여기다 쓰라고!!!</textarea>
+        <textarea name="content" id="content" placeholder = "여다쓰지?">{{old('content')}}</textarea>
         <br>
         <button type = "submit">작성</button>
     </form>

@@ -8,7 +8,7 @@
     <h1>LOGIN</h1>
     @include('layout.errorsvalidate')
 
-    <div>{{session('success')?? '이건가??'}}</div>
+    <div>{!!session()->has('success') ? session('success') : ""!!}</div>
     
     <form action="{{route('users.login.post')}}" method="post">
         @csrf
