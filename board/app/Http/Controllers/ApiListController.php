@@ -69,7 +69,7 @@ class ApiListController extends Controller
 
         $data = $req->only('title', 'content');
         $data['id'] = $id;
-      
+
         //유효성 체크구문
         $validator = Validator::make($data,[
             'id' => 'required|integer|exists:boards'
@@ -116,7 +116,7 @@ class ApiListController extends Controller
         }
         else{
         $boards = Boards::find($id);
-        if($board){                 //softdelete가 되지 않아서 확인을 위해서 추가한 if구문 
+        if($boards){                 //softdelete가 되지 않아서 확인을 위해서 추가한 if구문 
             $boards->delete(); 
             $arrData['errorcode'] = '0';
             $arrData['msg'] = 'success';
