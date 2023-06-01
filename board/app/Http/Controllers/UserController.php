@@ -134,7 +134,7 @@ class UserController extends Controller
         // 유효성 체크
         $req->validate($arrchk);
 
-        //수정할 데이터 셋팅
+        //수정할 데이터 셋팅: 어떻게>? 
         foreach($arrkey as $val){
             if($val === 'password'){
                 $baseUser->$val = Hash::make($req->$val);
@@ -168,12 +168,9 @@ class UserController extends Controller
 
     public function userinfo(){
         $id = session('id');
-        $userinfo = User::FindOrFail($id);
+        $userinfo = User::FindOrFail($id);      //$session id에 담겨있는 모든 정보를 가져 오는 구문 
         return view('userinfo')->with('data', $userinfo);
     }
-
-
-
 
 
 
