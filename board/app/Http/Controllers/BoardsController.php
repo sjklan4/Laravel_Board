@@ -21,13 +21,12 @@ class BoardsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() //데이터를 받아오기 위한 구문 작성
-    {
+    {          
         //로그인 체크 - 로그인이 되어야만 들어 갈수 있도록 하는구문 
 
         if(auth()->guest()){
             return redirect()->route('users.login');
         }
-
         
         $result = boards::select(['id','title','hits','created_at','updated_at'])->orderBy('hits','desc')->get();
         return view('list')->with('data', $result); // 뷰에 데이터를 보내주기 위해서 with문을 사용한다.

@@ -14,10 +14,23 @@ use Illuminate\Support\Facades\Hash; //여기 사용해야 되는거 ㅇㄷ서 �
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
     function login(){
+        $arr['key']='test';
+        $arr['kin']='park';
+            
+        
+        Log::emergency('emergency', $arr);
+        Log::alert('alert',$arr);
+        Log::error('error',$arr);
+        Log::warning('warning',$arr);
+        Log::notice('notice',$arr);
+        Log::info('info',$arr);
+        Log::debug('debug',$arr);
+
         return view('login');
     }
 
@@ -27,6 +40,9 @@ class UserController extends Controller
 
     function registrationpost(Request $req){
         // 유효성 체크
+
+        Log::debug("등록확인");
+
         $req->validate([
             'name'      => 'required|regex:/^[가-힣]+$/|min:2|max:30' 
             ,'email'    =>  'required|email|max:100'
@@ -69,7 +85,7 @@ class UserController extends Controller
         Auth::login($user);
         if(Auth::check()){
             session($user->only('id')); //세션에 인증된 회원 pk등록
-            return redirect()->intended(route('boards.index'));
+            return redirect()->intended(route('boards.index')); //intended사용시 앞전 데이터를 없에고 redirect시킨다.
         } else{
             $error = '인증작업 에러.';
             return redirect()->back()->with('error',$error);
@@ -106,7 +122,7 @@ class UserController extends Controller
         $baseUser = User::find(Auth::User()->id); //기존 데이터 획득
 
         //기존 패스워드 체크
-        if(Hash::check($req->bpassword, $user->bpassword)){
+        if(Hash::check($req->bpassword, $baseUser->bpassword)){
             redirect()->back()->with('error','기존 비밀번호를 확인해 주세요.');
         }
 
@@ -135,7 +151,7 @@ class UserController extends Controller
         $req->validate($arrchk);
 
         //수정할 데이터 셋팅: 어떻게>? 
-        foreach($arrkey as $val){
+        foreach($arrKey as $val){
             if($val === 'password'){
                 $baseUser->$val = Hash::make($req->$val);
                 continue;
